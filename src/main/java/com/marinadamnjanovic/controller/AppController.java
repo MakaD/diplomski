@@ -17,5 +17,18 @@ public class AppController {
         return "index";
     }
 
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
 
+    @RequestMapping("/menadzer")
+    public String menadzer(){
+        return "menadzer";
+    }
+
+    @RequestMapping("/zaposleni")
+    public String zaposleni(){
+        return "zaposleni";
+    }
 }
