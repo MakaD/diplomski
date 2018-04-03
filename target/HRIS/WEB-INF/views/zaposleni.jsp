@@ -225,6 +225,8 @@
     <p>HRIS created by Marina Damnjanović</p>
 </footer>
 
+<a href="<c:url value='/logout' />">Logout</a>
+
 </body>
 
 </html>

@@ -43,14 +43,29 @@
 <body>
 
 <div class="login-form">
-    <form action="" method="post">
+    <c:url var="loginPage" value="/login" />
+    <form action="<spring:url value="/login/"/>" method="post">
+
         <h2 class="text-center">Log in</h2>
+        <c:if test="${param.error != null}">
+            <div class="alert alert-danger">
+                <p>Invalid username and password.</p>
+            </div>
+        </c:if>
+        <c:if test="${param.logout != null}">
+            <div class="alert alert-success">
+                <p>You have been logged out successfully.</p>
+            </div>
+        </c:if>
+
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" required="required">
+            <input type="text" class="form-control" id="username" placeholder="Username" required="required">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required">
+            <input type="password" class="form-control" id="password" placeholder="Password" required="required">
         </div>
+        <input type="hidden" name="${_csrf.parameterName}" 	value="${_csrf.token}" />
+
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </div>
