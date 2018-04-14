@@ -21,7 +21,7 @@ public class OdmorServiceImpl implements OdmorService {
     }
 
     public void updateOdmor(Odmor odmor){
-        Odmor entity = odmorDao.getOdmorById(odmor.getId());
+        Odmor entity = odmorDao.getOdmorById(odmor.getZahtev().getId());
         if(entity!=null){
             entity.setPovod(odmor.getPovod());
             entity.setDatumOd(odmor.getDatumOd());

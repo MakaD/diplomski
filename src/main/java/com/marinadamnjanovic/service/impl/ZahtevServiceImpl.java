@@ -23,9 +23,9 @@ public class ZahtevServiceImpl implements ZahtevService {
     public void updateZahtev(Zahtev zahtev){
         Zahtev entity = zahtevDao.getZahtevById(zahtev.getId());
         if(entity!=null){
-            entity.setDatum(zahtev.getDatum());
-            entity.setPredmet(zahtev.getPredmet());
             entity.setStatus(zahtev.getStatus());
+            entity.getOdmor().setDatumOd(zahtev.getOdmor().getDatumOd());
+            entity.getOdmor().setDatumDo(zahtev.getOdmor().getDatumDo());
         }
     }
 
