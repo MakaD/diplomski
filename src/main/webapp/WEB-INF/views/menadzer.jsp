@@ -98,7 +98,7 @@
                                 <div class="col-sm-6">
                                         <label class="form-control-label">Datum od:</label>
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker1'>
+                                            <div class='datetimepicker1 input-group date' id=''>
                                                 <input type='text' class="form-control" name="datumOd" value="${zahtev.datumOd}"/>
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -107,14 +107,14 @@
                                         </div>
                                     <script type="text/javascript">
                                         $(function () {
-                                            $('#datetimepicker1').datepicker();
+                                            $('.datetimepicker1').datepicker();
                                         });
                                     </script>
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-control-label">Datum do:</label>
                                     <div class="form-group">
-                                        <div class='input-group date' id='datetimepicker2'>
+                                        <div class='datetimepicker2 input-group date' id=''>
                                             <input type='text' class="form-control" name="datumDo" value=" ${zahtev.datumDo}"/>
                                             <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -123,7 +123,7 @@
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
-                                            $('#datetimepicker2').datepicker();
+                                            $('.datetimepicker2').datepicker();
                                         });
                                     </script>
                                 </div>

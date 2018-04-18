@@ -82,17 +82,15 @@
             </div>
 
             <div class="col-sm-12" style="padding-top: 2%;">
+            <c:forEach items="${zahtevi}" var="zahtev">
 
+                <form:form method="POST" action="/menadzer" modelAttribute="zahtev">
+                <input type="hidden" class="form-control" name="id" value="${zahtev.id}" />
 
                 <div class="container" id="cont" style="width: 50%; margin: 0%; padding: 0%;">
                     <div class="panel panel-default" >
                         <div class="panel-body">
                             <div class="row">
-
-                                <c:forEach items="${zahtevi}" var="zahtev">
-
-                                <form:form method="POST" action="/menadzer" modelAttribute="zahtev">
-                                <input type="hidden" class="form-control" name="id" value="${zahtev.id}" />
 
                                 <div class="col-sm-12">
                                     <label class="form-control-label">Povod: ${zahtev.povod}</label>
@@ -100,7 +98,7 @@
                                 <div class="col-sm-6">
                                         <label class="form-control-label">Datum od:</label>
                                         <div class="form-group">
-                                            <div class='input-group date' id='datetimepicker1'>
+                                            <div class='datetimepicker1 input-group date' id=''>
                                                 <input type='text' class="form-control" name="datumOd" value="${zahtev.datumOd}"/>
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -109,14 +107,14 @@
                                         </div>
                                     <script type="text/javascript">
                                         $(function () {
-                                            $('#datetimepicker1').datepicker();
+                                            $('.datetimepicker1').datepicker();
                                         });
                                     </script>
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-control-label">Datum do:</label>
                                     <div class="form-group">
-                                        <div class='input-group date' id='datetimepicker2'>
+                                        <div class='datetimepicker2 input-group date' id=''>
                                             <input type='text' class="form-control" name="datumDo" value=" ${zahtev.datumDo}"/>
                                             <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -125,7 +123,7 @@
                                     </div>
                                     <script type="text/javascript">
                                         $(function () {
-                                            $('#datetimepicker2').datepicker();
+                                            $('.datetimepicker2').datepicker();
                                         });
                                     </script>
                                 </div>
@@ -144,10 +142,6 @@
 
                                 </div>
 
-                                </form:form>
-
-                                </c:forEach>
-
                             </div>
                         </div>
 
@@ -157,7 +151,9 @@
                 <div class="success" id="success" style="display: none;"><h5 class="text-muted">Zahtev je odobren</h5></div>
                 <div class="negative" id="negative" style="display: none;"><h5 class="text-muted">Zahtev nije odobren</h5></div>
 
+                </form:form>
 
+            </c:forEach>
             </div>
 
         </div>

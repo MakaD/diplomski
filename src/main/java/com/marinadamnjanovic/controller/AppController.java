@@ -1,23 +1,13 @@
 package com.marinadamnjanovic.controller;
 
-import com.marinadamnjanovic.dao.OdmorDao;
-import com.marinadamnjanovic.dao.ZahtevDao;
 import com.marinadamnjanovic.dao.dto.OdmorDto;
 import com.marinadamnjanovic.model.Odmor;
 import com.marinadamnjanovic.model.Zahtev;
 import com.marinadamnjanovic.service.OdmorService;
 import com.marinadamnjanovic.service.ZahtevService;
-import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.jaas.SecurityContextLoginModule;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -31,7 +21,6 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,24 +36,59 @@ public class AppController {
     MessageSource messageSource;
 
     @Autowired
-    ZahtevService zahtevDao;
+    ZahtevService zahtevService;
 
     @Autowired
-    OdmorService odmorDao;
+    OdmorService odmorService;
 
     @RequestMapping("/")
     public String backHome(){
         return "index";
     }
 
-
-
-
     //@PreAuthorize("hasRole('MENADZER')")
     @RequestMapping(value = { "/menadzer" }, method = RequestMethod.GET)
     public String menadzer(ModelMap model){
 
-        List<Zahtev> zahteviList = zahtevDao.listZahtev();
+        List<OdmorDto> zahtevi = zahteviList();
+
+		model.addAttribute("zahtevi", zahtevi);
+
+        return "menadzer";
+    }
+
+    @RequestMapping (value = { "/menadzer"}, method = RequestMethod.POST)
+    public String menadzerPost(@Valid @ModelAttribute("zahtev") OdmorDto zahtev, BindingResult resulet,
+                                     ModelMap model){
+
+        DateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
+
+        try {
+            Date dateOd = formatter.parse(zahtev.getDatumOd());
+            Date dateDo = formatter.parse(zahtev.getDatumDo());
+
+            Zahtev z = zahtevService.getZahtevById(zahtev.getId());
+
+            //z.setStatus();
+            z.getOdmor().setDatumOd(dateOd);
+            z.getOdmor().setDatumDo(dateDo);
+            z.setStatus(1);
+
+            zahtevService.updateZahtev(z);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<OdmorDto> zahtevi = zahteviList();
+
+        model.addAttribute("zahtevi", zahtevi);
+
+        return "menadzer";
+    }
+
+    public List<OdmorDto> zahteviList(){
+        List<Zahtev> zahteviList = zahtevService.listZahtev();
         List<OdmorDto> zahtevi = new ArrayList<>();
 
         for(Zahtev z : zahteviList){
@@ -77,40 +101,8 @@ public class AppController {
             }
         }
 
-		model.addAttribute("zahtevi", zahtevi);
-
-        return "menadzer";
+        return zahtevi;
     }
-
-
-    @RequestMapping (value = { "/menadzer"}, method = RequestMethod.POST)
-    public ModelAndView menadzerPost(@Valid @ModelAttribute("zahtev") OdmorDto zahtev, BindingResult resulet,
-                                     ModelAndView model){
-
-        DateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
-
-        try {
-            Date dateOd = formatter.parse(zahtev.getDatumOd());
-            Date dateDo = formatter.parse(zahtev.getDatumDo());
-
-            Zahtev z = zahtevDao.getZahtevById(zahtev.getId());
-
-            //z.setStatus();
-            z.getOdmor().setDatumOd(dateOd);
-            z.getOdmor().setDatumDo(dateDo);
-            z.setStatus(1);
-
-            zahtevDao.updateZahtev(z);
-
-            model.addObject("success", "Zahtev " + " updated successfully");
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return model;
-    }
-
 
     //@PreAuthorize("hasRole('ZAPOSLENI')")
     @RequestMapping(value = { "/zaposleni" }, method = RequestMethod.GET)
@@ -133,7 +125,7 @@ public class AppController {
             Odmor odmor = new Odmor(dateOd, dateDo, povod);
             Zahtev zahtev = new Zahtev(0, new String(""), new Date());
             zahtev.setOdmor(odmor);
-            zahtevDao.addZahtev(zahtev);
+            zahtevService.addZahtev(zahtev);
 
             model.addObject("successMsg", "Odmor uspesno dodat");
 
@@ -143,9 +135,6 @@ public class AppController {
 
         return model;
     }
-
-
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
