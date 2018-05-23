@@ -16,9 +16,6 @@ import java.util.List;
 public class OdmorDaoImpl extends AbstractDao<Integer, Odmor> implements OdmorDao{
 
     public void addOdmor(Odmor odmor){
-
-
-        System.out.println(odmor);
         persist(odmor);
     }
 

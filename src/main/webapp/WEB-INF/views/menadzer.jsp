@@ -93,6 +93,9 @@
                             <div class="row">
 
                                 <div class="col-sm-12">
+                                    <label class="form-control-label">Zaposleni: Ivan Nikolić</label>
+                                </div>
+                                <div class="col-sm-12">
                                     <label class="form-control-label">Povod: ${zahtev.povod}</label>
                                 </div>
                                 <div class="col-sm-6">
